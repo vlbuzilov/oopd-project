@@ -1,0 +1,33 @@
+﻿@model Login
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <form asp-action="SubmitLogin" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="Email" asp-for="Email" class="form-control" required />
+            <span class="text-danger" style="font-size: 80%;">@Html.ValidationMessageFor(model => model.Email)</span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="Password" asp-for="Password" class="form-control" required />
+            <span class="text-danger" style="font-size: 80%;">@Html.ValidationMessageFor(model => model.Password)</span>
+        </div>
+
+        @if (ViewData["ShowSecretKeyField"] != null && (bool)ViewData["ShowSecretKeyField"])
+        {
+            <div class="form-group">
+                <label for="secretKey">Secret Key:</label>
+                <input type="password" id="secretKey" name="SecretKey" class="form-control" required />
+                <span class="text-danger" style="font-size: 80%;">@Html.ValidationMessageFor(model => model.SecretKey)</span>
+            </div>
+        }
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>

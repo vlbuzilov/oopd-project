@@ -1,0 +1,40 @@
+﻿<Properties StartupConfiguration="{4D25B39A-BAB1-4757-A664-C022398D9DB9}|https">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Controllers/ClientRegistrationController.cs" relfile="oopd-project/Controllers/ClientRegistrationController.cs" line="48" column="1" />
+      <Breakpoint file="/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Controllers/ClientRegistrationController.cs" relfile="oopd-project/Controllers/ClientRegistrationController.cs" line="91" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.oopd-project PreferredExecutionTarget="/System/Volumes/Preboot/Cryptexes/App/System/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="oopd-project/Controllers/CoachMainPageController.cs">
+    <Files>
+      <File FileName="oopd-project/Controllers/CoachMainPageController.cs" Line="15" Column="34" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="oopd-project">
+            <Node name="oopd-project">
+              <Node name="Controllers" expanded="True">
+                <Node name="CoachMainPageController.cs" selected="True" />
+              </Node>
+              <Node name="DBContext" expanded="True">
+                <Node name="DBModels" expanded="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Profile" expanded="True" />
+              </Node>
+              <Node name="wwwroot">
+                <Node name="css" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

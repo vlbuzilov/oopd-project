@@ -1,0 +1,59 @@
+﻿@model Client
+
+@{
+    ViewData["Title"] = "Client Registration";
+}
+
+<div class="h2_registration">
+    <h2>Client Registration</h2>
+</div>
+
+<div class="client-registration-container">
+    <form asp-action="Register" method="post">
+        <div class="form-group">
+            <label asp-for="Email">Email:</label>
+            <input asp-for="Email" type="email" class="form-control" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password">Password:</label>
+            <input asp-for="Password" type="password" class="form-control" required />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ConfirmationPassword">Confirm password:</label>
+            <input asp-for="ConfirmationPassword" type="password" class="form-control" required />
+            <span asp-validation-for="ConfirmationPassword" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FirstName">First Name:</label>
+            <input asp-for="FirstName" class="form-control" required />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName">Last Name:</label>
+            <input asp-for="LastName" class="form-control" required />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PhoneNumber">Phone Number:</label>
+            <input asp-for="PhoneNumber" class="form-control" required />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Birthdate">Birthdate:</label>
+            <input asp-for="Birthdate" type="date" class="form-control" required />
+            <span asp-validation-for="Birthdate" class="text-danger"></span>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+</div>

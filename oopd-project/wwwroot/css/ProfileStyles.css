@@ -1,0 +1,62 @@
+﻿body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+}
+
+.profile-container {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+h2{
+    color: #5A5A5A;
+}
+
+h4 {
+    color: #204d4f;
+}
+
+.profile {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+footer {
+    margin-top: auto;
+}
+
+
+.editButton, .saveButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+    font-size: 14px;
+    background-color: #5A5A5A;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .editButton, .saveButton button:hover {
+        background-color: #5A5A5A;
+    }

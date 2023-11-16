@@ -1,0 +1,75 @@
+﻿@model Coach
+
+@{
+    ViewData["Profile"] = "Profile";
+}
+<link rel="stylesheet" href="~/css/ProfileStyles.css" asp-append-version="true">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<div class="profile-container">
+    <h2>Coach Profile</h2>
+
+    <div class="profile">
+        <p></p>
+        <p></p>
+        <p>
+            <h4>
+                Hello, <span id="fullName">@Model.FirstName @Model.LastName</span>!
+            </h4>
+        </p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p></p>
+        <p>Email: <span id="emailValue">@Model.Email</span></p>
+        <p>Phone Number: <span id="phoneValue">@Model.PhoneNumber</span></p>
+        <p>Birthdate: <span id="birthdateValue">@Model.Birthdate.ToShortDateString()</span></p>
+        <p>Specialization: <span id="specializationValue">@Model.Specialization</span></p>
+
+        <button class="editButton" id="editButton" onclick="enableEditing()">Edit Profile</button>
+        <button class="saveButton" id="saveButton" style="display: none;" onclick="saveChanges()">Save Changes</button>
+    </div>
+</div>
+
+<script>function enableEditing() {
+        document.getElementById('fullName').contentEditable = true;
+        document.getElementById('phoneValue').contentEditable = true;
+        document.getElementById('birthdateValue').contentEditable = true;
+        document.getElementById('specializationValue').contentEditable = true;
+
+        document.getElementById('editButton').style.display = 'none';
+        document.getElementById('saveButton').style.display = 'inline-block';
+    }
+
+    function saveChanges() {
+        var editedName = document.getElementById('fullName').innerText;
+        var editedPhone = document.getElementById('phoneValue').innerText;
+        var editedBirthdate = document.getElementById('birthdateValue').innerText;
+        var editedSpecialization = document.getElementById('specializationValue').innerText;
+
+        var editedData = {
+            Name: editedName,
+            PhoneNumber: editedPhone,
+            Birthdate: editedBirthdate,
+            Specialization: editedSpecialization
+        };
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Profile/SaveChanges",
+            data: { jsonResponse: JSON.stringify(editedData) }
+        });
+
+        disableEditing();
+    }
+
+    function disableEditing() {
+        document.getElementById('fullName').contentEditable = false;
+        document.getElementById('phoneValue').contentEditable = false;
+        document.getElementById('birthdateValue').contentEditable = false;
+        document.getElementById('specializationValue').contentEditable = false;
+
+        document.getElementById('editButton').style.display = 'inline-block';
+        document.getElementById('saveButton').style.display = 'none';
+    }</script>

@@ -1,0 +1,77 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = oopd_project
+build_property.RootNamespace = oopd_project
+build_property.ProjectDir = /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/AdministratorMainPage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5pc3RyYXRvck1haW5QYWdlL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/AdministratorRegistration/AdministratorRegistration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5pc3RyYXRvclJlZ2lzdHJhdGlvbi9BZG1pbmlzdHJhdG9yUmVnaXN0cmF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/ClientRegistration/Registration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xpZW50UmVnaXN0cmF0aW9uL1JlZ2lzdHJhdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/CoachMainPage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29hY2hNYWluUGFnZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/CoachRegistration/CoachRegistration.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29hY2hSZWdpc3RyYXRpb24vQ29hY2hSZWdpc3RyYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Login/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTG9naW4vTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/MainPage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFpblBhZ2UvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Profile/AdminProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZmlsZS9BZG1pblByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Profile/ClientProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZmlsZS9DbGllbnRQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Profile/CoachProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZmlsZS9Db2FjaFByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-rtgf8ibw5g

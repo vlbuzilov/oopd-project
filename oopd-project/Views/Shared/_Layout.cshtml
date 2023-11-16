@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]NeverRest</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/oopd_project.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <span class="logo">NeverRest</span>
+        <nav>
+            @if (@Context.Session.GetInt32("UserType") == 1 && @Context.Session.GetInt32("IsAuthorized") == 1)
+            {
+                <a href="/AdministratorMainPage/Index">Main Page</a>
+            }
+            @if (@Context.Session.GetInt32("UserType") == 2 && @Context.Session.GetInt32("IsAuthorized") == 1)
+            {
+                <a href="/CoachMainPage/Index">Main Page</a>
+            }
+            @if (@Context.Session.GetInt32("UserType") == 3 && @Context.Session.GetInt32("IsAuthorized") == 1)
+            {
+                <a href="/MainPage/Index">Main Page</a>
+            }
+
+            @if (@Context.Session.GetInt32("IsAuthorized") != 1)
+            {
+                <a href="/ClientRegistration/SignUp">Sign Up</a>
+            }
+            else
+            {
+                <a href="/Profile/Profile">Profile</a>
+            }
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>All rights are assured</footer>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>oopd_project</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="DBContext\" />
+    <None Remove="DBContext\DBModels\" />
+    <None Remove="Views\ClientRegistration\" />
+    <None Remove="Views\AdministratorRegistration\" />
+    <None Remove="Views\CoachRegistration\" />
+    <None Remove="Views\Login\" />
+    <None Remove="Views\MainPage\" />
+    <None Remove="Views\AdministratorMainPage\" />
+    <None Remove="Views\CoachMainPage\" />
+    <None Remove="Views\Profile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DBContext\" />
+    <Folder Include="DBContext\DBModels\" />
+    <Folder Include="Views\ClientRegistration\" />
+    <Folder Include="Views\AdministratorRegistration\" />
+    <Folder Include="Views\CoachRegistration\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\MainPage\" />
+    <Folder Include="Views\AdministratorMainPage\" />
+    <Folder Include="Views\CoachMainPage\" />
+    <Folder Include="Views\Profile\" />
+  </ItemGroup>
+</Project>
