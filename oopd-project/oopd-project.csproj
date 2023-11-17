@@ -12,6 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="GitHub" Version="1.34.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="DBContext\" />
@@ -30,11 +35,11 @@
     <Folder Include="DBContext\DBModels\" />
     <Folder Include="Views\ClientRegistration\" />
     <Folder Include="Views\AdministratorRegistration\" />
+    <Folder Include="Views\CoachMainPage\" />
     <Folder Include="Views\CoachRegistration\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\MainPage\" />
     <Folder Include="Views\AdministratorMainPage\" />
-    <Folder Include="Views\CoachMainPage\" />
     <Folder Include="Views\Profile\" />
   </ItemGroup>
 </Project>

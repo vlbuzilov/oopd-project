@@ -19,6 +19,7 @@ namespace oopd_project
         public DbSet<Support> Support { get; set; } = null!;
         public DbSet<UserRole> User_Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Clients_Classes> Clients_Classes { get; set; } = null!;
 
         public DataBaseContext()
         {

@@ -8,6 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "oopd-project/1.0.0": {
         "dependencies": {
+          "GitHub": "1.34.0",
+          "Microsoft.SourceLink.GitHub": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
           "Pomelo.EntityFrameworkCore.MySql": "7.0.0"
         },
@@ -15,6 +17,67 @@
           "oopd-project.dll": {}
         }
       },
+      "Carbon.Data.Protection/1.5.0": {
+        "runtime": {
+          "lib/net5.0/Carbon.Data.Protection.dll": {
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.0.0"
+          }
+        }
+      },
+      "Carbon.Packaging/1.50.0": {
+        "dependencies": {
+          "Carbon.Data.Protection": "1.5.0",
+          "Carbon.Storage": "3.0.1",
+          "Carbon.Versioning": "2.0.1"
+        },
+        "runtime": {
+          "lib/net5.0/Carbon.Packaging.dll": {
+            "assemblyVersion": "1.50.0.0",
+            "fileVersion": "1.50.0.0"
+          }
+        }
+      },
+      "Carbon.Storage/3.0.1": {
+        "runtime": {
+          "lib/net5.0/Carbon.Storage.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.1.0"
+          }
+        }
+      },
+      "Carbon.VersionControl/2.6.0": {
+        "dependencies": {
+          "Carbon.Storage": "3.0.1"
+        },
+        "runtime": {
+          "lib/net5.0/Carbon.VersionControl.dll": {
+            "assemblyVersion": "2.6.0.0",
+            "fileVersion": "2.6.0.0"
+          }
+        }
+      },
+      "Carbon.Versioning/2.0.1": {
+        "runtime": {
+          "lib/net5.0/Carbon.Versioning.dll": {
+            "assemblyVersion": "2.0.1.0",
+            "fileVersion": "2.0.1.0"
+          }
+        }
+      },
+      "GitHub/1.34.0": {
+        "dependencies": {
+          "Carbon.Packaging": "1.50.0",
+          "Carbon.VersionControl": "2.6.0"
+        },
+        "runtime": {
+          "lib/net5.0/GitHub.dll": {
+            "assemblyVersion": "1.34.0.0",
+            "fileVersion": "1.34.0.0"
+          }
+        }
+      },
+      "Microsoft.Build.Tasks.Git/8.0.0": {},
       "Microsoft.EntityFrameworkCore/7.0.2": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Abstractions": "7.0.2",
@@ -92,6 +155,13 @@
         }
       },
       "Microsoft.Extensions.Primitives/7.0.0": {},
+      "Microsoft.SourceLink.Common/8.0.0": {},
+      "Microsoft.SourceLink.GitHub/8.0.0": {
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "8.0.0",
+          "Microsoft.SourceLink.Common": "8.0.0"
+        }
+      },
       "MySqlConnector/2.2.5": {
         "runtime": {
           "lib/net7.0/MySqlConnector.dll": {
@@ -127,6 +197,55 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Carbon.Data.Protection/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3/+PcHtuKgBotHII1Dth0SLBhNDvu2oCec0QdlRus/oHyr25BpfyhvV7h84hWP4UQQjmvymQwM0f7jLy0Vr86w==",
+      "path": "carbon.data.protection/1.5.0",
+      "hashPath": "carbon.data.protection.1.5.0.nupkg.sha512"
+    },
+    "Carbon.Packaging/1.50.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-w8QyiBSWSqgpTWmWSYe1jJHPa20i+pd+tPT0qFWvv0gsYuPkBU6zEbH9e6Y1Xr7HdT0SFEF80neWYKy0Y6yODA==",
+      "path": "carbon.packaging/1.50.0",
+      "hashPath": "carbon.packaging.1.50.0.nupkg.sha512"
+    },
+    "Carbon.Storage/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cymUDZ3EOryvSZEG9R8aK1Q42bbmBAoh8NX+mZdXar6AqzbUiw3rC8EmDbleRl/3l+7cpVd/TDFGxZsslfPqpA==",
+      "path": "carbon.storage/3.0.1",
+      "hashPath": "carbon.storage.3.0.1.nupkg.sha512"
+    },
+    "Carbon.VersionControl/2.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oo+oCdcRwrwjn/4I8CwzrDjH+vcTGvr9QPjJp4HFWAba3ahWiZhCWhioumbmBxnetLENGq6w64TC/xSNwecZbg==",
+      "path": "carbon.versioncontrol/2.6.0",
+      "hashPath": "carbon.versioncontrol.2.6.0.nupkg.sha512"
+    },
+    "Carbon.Versioning/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sb5wO/BgMAMvUX6gf41h7Qhl5BkbDZbGiZxm8krEq/cNbpnH+kWlo9TJmTk/5XBB+K97xzgpk2VkBedmEl1Ewg==",
+      "path": "carbon.versioning/2.0.1",
+      "hashPath": "carbon.versioning.2.0.1.nupkg.sha512"
+    },
+    "GitHub/1.34.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-X+Rn0rMMBdxlaFIL/cZAowKcnU29/oNZ9c3p61yvgJ962LmFUjlF7c2rtqbWMmOjoWxWfdoGygc2EwIPSDUQng==",
+      "path": "github/1.34.0",
+      "hashPath": "github.1.34.0.nupkg.sha512"
+    },
+    "Microsoft.Build.Tasks.Git/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bZKfSIKJRXLTuSzLudMFte/8CempWjVamNUR5eHJizsy+iuOuO/k2gnh7W0dHJmYY0tBf+gUErfluCv5mySAOQ==",
+      "path": "microsoft.build.tasks.git/8.0.0",
+      "hashPath": "microsoft.build.tasks.git.8.0.0.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore/7.0.2": {
       "type": "package",
@@ -218,6 +337,20 @@
       "sha512": "sha512-um1KU5kxcRp3CNuI8o/GrZtD4AIOXDk+RLsytjZ9QPok3ttLUelLKpilVPuaFT3TFjOhSibUAso0odbOaCDj3Q==",
       "path": "microsoft.extensions.primitives/7.0.0",
       "hashPath": "microsoft.extensions.primitives.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.SourceLink.Common/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dk9JPxTCIevS75HyEQ0E4OVAFhB2N+V9ShCXf8Q6FkUQZDkgLI12y679Nym1YqsiSysuQskT7Z+6nUf3yab6Vw==",
+      "path": "microsoft.sourcelink.common/8.0.0",
+      "hashPath": "microsoft.sourcelink.common.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.SourceLink.GitHub/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G5q7OqtwIyGTkeIOAc3u2ZuV/kicQaec5EaRnc0pIeSnh9LUjj+PYQrJYBURvDt7twGl2PKA7nSN0kz1Zw5bnQ==",
+      "path": "microsoft.sourcelink.github/8.0.0",
+      "hashPath": "microsoft.sourcelink.github.8.0.0.nupkg.sha512"
     },
     "MySqlConnector/2.2.5": {
       "type": "package",

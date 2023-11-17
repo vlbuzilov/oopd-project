@@ -19,6 +19,7 @@
             @if (@Context.Session.GetInt32("UserType") == 2 && @Context.Session.GetInt32("IsAuthorized") == 1)
             {
                 <a href="/CoachMainPage/Index">Main Page</a>
+                <a href="/CoachMainPage/Classes">Classes Menu</a>
             }
             @if (@Context.Session.GetInt32("UserType") == 3 && @Context.Session.GetInt32("IsAuthorized") == 1)
             {

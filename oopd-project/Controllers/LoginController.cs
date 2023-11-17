@@ -11,7 +11,6 @@ namespace oopd_project.Controllers
 {
     public class LoginController : Controller
     {
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -100,8 +99,7 @@ namespace oopd_project.Controllers
                 var foundUser = db.Administrators
                     .Include(admin => admin.User)
                     .ThenInclude(user => user.UserRole)
-                    .Where(admin => admin.User.Email == login.Email && admin.User.Password == login.Password)
-                    .FirstOrDefault();
+                    .FirstOrDefault(admin => admin.User.Email == login.Email && admin.User.Password == login.Password);
 
                 if (foundUser != null)
                 {
@@ -119,8 +117,7 @@ namespace oopd_project.Controllers
             using (DataBaseContext db = new DataBaseContext())
             {
                 var foundId = db.Users
-                    .Where(user => user.Email == login.Email && user.Password == login.Password)
-                    .FirstOrDefault();
+                    .FirstOrDefault(user => user.Email == login.Email && user.Password == login.Password);
                 if(foundId != null)
                 {
                     id = foundId.User_ID;

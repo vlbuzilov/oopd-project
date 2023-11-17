@@ -36,3 +36,10 @@
 /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/obj/Debug/net7.0/oopd-project.pdb
 /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/obj/Debug/net7.0/oopd-project.genruntimeconfig.cache
 /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/obj/Debug/net7.0/ref/oopd-project.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/Carbon.Data.Protection.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/Carbon.Packaging.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/Carbon.Storage.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/Carbon.VersionControl.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/Carbon.Versioning.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/bin/Debug/net7.0/GitHub.dll
+/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/obj/Debug/net7.0/oopd-project.sourcelink.json

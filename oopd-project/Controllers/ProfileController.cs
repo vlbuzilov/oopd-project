@@ -67,6 +67,7 @@ namespace oopd_project.Controllers
 
         private void UpdateAdmin(Models.EditedDataDTO editedAdmin)
         {
+            DateTime birthDate = DateTime.Parse(editedAdmin.Birthdate);
             DBContext.DBModels.Administrator admin = null;
 
             using (DataBaseContext db = new DataBaseContext())
@@ -84,7 +85,7 @@ namespace oopd_project.Controllers
                     admin.Name = editedAdmin.Name;
                     admin.Last_Name = editedAdmin.LastName;
                     user.Phone_Number = editedAdmin.PhoneNumber;
-                    user.Birthdate = editedAdmin.Birthdate;
+                    user.Birthdate = birthDate;
                     db.SaveChanges();
                 }
             }
@@ -92,6 +93,7 @@ namespace oopd_project.Controllers
 
         private void UpdateCoach(Models.EditedDataDTO editedCoach)
         {
+            DateTime birthDate = DateTime.Parse(editedCoach.Birthdate);
             DBContext.DBModels.Coach coach = null;
 
             using (DataBaseContext db = new DataBaseContext())
@@ -110,7 +112,7 @@ namespace oopd_project.Controllers
                     coach.Last_Name = editedCoach.LastName;
                     coach.Specialization = editedCoach.Specialization;
                     user.Phone_Number = editedCoach.PhoneNumber;
-                    user.Birthdate = editedCoach.Birthdate;
+                    user.Birthdate = birthDate;
                     db.SaveChanges();
                 }
             }
@@ -119,6 +121,7 @@ namespace oopd_project.Controllers
         private void UpdateClient(Models.EditedDataDTO editedClient)
         {
             DBContext.DBModels.Client client = null;
+            DateTime birthDate = DateTime.Parse(editedClient.Birthdate);
 
             using (DataBaseContext db = new DataBaseContext())
             {
@@ -135,7 +138,7 @@ namespace oopd_project.Controllers
                     client.Name = editedClient.Name;
                     client.Last_Name = editedClient.LastName;
                     user.Phone_Number = editedClient.PhoneNumber;
-                    user.Birthdate = editedClient.Birthdate;
+                    user.Birthdate = birthDate;
                     db.SaveChanges();
                 }
             }
