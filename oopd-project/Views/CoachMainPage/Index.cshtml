@@ -1,44 +1,44 @@
-﻿@model Coach
+﻿@model Schedule
 
 @{
     ViewData["Title"] = "Main Page";
 }
 
+<h2 class="mb-4">Your Current Classes</h2> <!-- Added margin-bottom (mb) Bootstrap class -->
 
-<h2>Your Classes</h2>
-
-<table id="classesTable">
-    <thead>
-        <tr>
-            <th>Class name</th>
-            <th>Max participants</th>
-            <th>Day</th>
-            <th>Time</th>
-            <th>Duration</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-
-<script>
-        var trainerClasses = @Html.Raw(Json.Serialize(Model.MyClasses));
-
-        function populateClassesTable() {
-            var tableBody = document.querySelector('#classesTable tbody');
-
-            tableBody.innerHTML = '';
-
-            trainerClasses.forEach(function (classInfo) {
-                var row = document.createElement('tr');
-                row.innerHTML = '<td>' + classInfo.className + '</td>' +
-                    '<td>' + classInfo.maxParticipants + '</td>' +
-                    '<td>' + classInfo.day + '</td>' +
-                    '<td>' + classInfo.time + '</td>' +
-                    '<td>' + classInfo.duration + '</td>';
-                tableBody.appendChild(row);
-            });
-        }
-
-        window.onload = populateClassesTable;
-</script>
+@if (Model != null && Model._Schedule.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Class name</th>
+                    <th>Description</th>
+                    <th>Participants</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model._Schedule)
+                {
+                    <tr>
+                        <td>@item.Class.Name</td>
+                        <td>@item.Class.Description</td>
+                        <td>@item.Class.CurrentNumberOfPeople / @item.Class.MaxNumberOfPeople</td>
+                        <td>@item.DateTime.ToString("MM/dd/yyyy")</td>
+                        <td>@item.DateTime.ToString("hh:mm tt")</td>
+                        <td>@item.Class.Duration.ToString("hh':'mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-4"> 
+        <p>You have no classes in the nearest future :)</p>
+    </div>
+}

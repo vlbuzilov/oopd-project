@@ -35,7 +35,6 @@
     <Folder Include="DBContext\DBModels\" />
     <Folder Include="Views\ClientRegistration\" />
     <Folder Include="Views\AdministratorRegistration\" />
-    <Folder Include="Views\CoachMainPage\" />
     <Folder Include="Views\CoachRegistration\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\MainPage\" />
