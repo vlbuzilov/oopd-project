@@ -8,7 +8,7 @@ namespace oopd_project.DBContext.DBModels
 	{
         [Key]
         public int Class_ID { get; set; }
-		public int Coach_ID { get; set; }
+		public int? Coach_ID { get; set; }
 		public string Class_Name { get; set; }
 		public double Duration { get; set; }
 		public string Description { get; set; }

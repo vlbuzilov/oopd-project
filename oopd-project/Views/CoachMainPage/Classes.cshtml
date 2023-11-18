@@ -1,7 +1,46 @@
-@page
-@model oopd_project.Views.CoachMainPage.Classes
+@model List<Class>;
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Classes Page";
+}
+
+<h2 class="mb-4">All possible classes Classes</h2> 
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Class name</th>
+                    <th>Description</th>
+                    <th>Max number of people</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.MaxNumberOfPeople</td>
+                        <td>@item.Duration.ToString("hh':'mm")</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="CoachMainPage" asp-action="TakeClass" asp-route-id="@item.Id" class="btn btn-primary">Take it</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-4"> 
+        <p>No unassigned classes now</p>
+    </div>
 }
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Main Page";
 }
 
-<h2 class="mb-4">Your Current Classes</h2> <!-- Added margin-bottom (mb) Bootstrap class -->
+<h2 class="mb-4">Your Current Classes</h2> 
 
 @if (Model != null && Model._Schedule.Any())
 {
@@ -30,6 +30,11 @@
                         <td>@item.DateTime.ToString("MM/dd/yyyy")</td>
                         <td>@item.DateTime.ToString("hh:mm tt")</td>
                         <td>@item.Class.Duration.ToString("hh':'mm")</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="CoachMainPage" asp-action="DeclineClass" asp-route-id="@item.Class.Id" asp-route-name="@item.Class.Name" asp-route-description="@item.Class.Description" class="btn btn-primary">Decline it</a>
+                            </div>
+                            </td>
                     </tr>
                 }
             </tbody>
