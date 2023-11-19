@@ -1,5 +1,70 @@
-﻿@model Administrator
-   
+﻿@model Schedule
+
 @{
+    ViewData["Title"] = "Club Schedule";
 }
 
+<h2 class="mb-4">Current Schedule</h2>
+
+<form asp-controller="AdministratorMainPage" asp-action="AddToSchedule" method="post">
+    <div class="form-row mb-3">
+        <div class="col-md-4">
+            <label asp-for="@Model._ClassToAdd.ClassId">Select Class:</label>
+            <select asp-for="@Model._ClassToAdd.ClassId" asp-items="@(new SelectList(Model._AvailableClasses, "Id", "Name"))" class="form-control">
+            </select>
+        </div>
+        <div class="col-md-4">
+           <label asp-for="@Model._ClassToAdd.SelectedDate">Select Date:</label>
+           <input asp-for="@Model._ClassToAdd.SelectedDate" type="date" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <label asp-for="@Model._ClassToAdd.SelectedTime">Select Time:</label>
+          <input asp-for="@Model._ClassToAdd.SelectedTime" type="time" class="form-control" required>
+        </div>
+    </div>
+    <input type="hidden" asp-for="@Model._ClassToAdd.ClassId" name="classId" />
+
+    <button type="submit" class="btn btn-success">Add to Schedule</button>
+</form>
+
+
+@if (Model != null && Model._Schedule.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Class name</th>
+                    <th>Participants</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model._Schedule)
+                {
+                    <tr>
+                        <td>@item.Class.Name</td>
+                        <td>@item.Class.CurrentNumberOfPeople / @item.Class.MaxNumberOfPeople</td>
+                        <td>@item.DateTime.ToString("MM/dd/yyyy")</td>
+                        <td>@item.DateTime.ToString("hh:mm tt")</td>
+                        <td>@item.Class.Duration.ToString("hh':'mm")</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="AdministratorMainPage" asp-action="DeclineClass" asp-route-scheduleItemId="@item.ScheduleItemId" class="btn btn-primary">Decline it</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mt-4">
+        <p>You have no classes in the nearest future :)</p>
+    </div>
+}

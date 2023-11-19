@@ -5,6 +5,7 @@ namespace oopd_project.Models
 	{
 		public Class Class { get; set; }
 		public DateTime DateTime { get; set; }
+		public int ScheduleItemId { get; set; }
 	}
 }
 

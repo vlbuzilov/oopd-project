@@ -38,7 +38,6 @@
     <Folder Include="Views\CoachRegistration\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\MainPage\" />
-    <Folder Include="Views\AdministratorMainPage\" />
     <Folder Include="Views\Profile\" />
   </ItemGroup>
 </Project>

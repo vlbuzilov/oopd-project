@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project
 build_property._RazorSourceGeneratorDebug = 
 
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/AdministratorMainPage/Classes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5pc3RyYXRvck1haW5QYWdlL0NsYXNzZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/AdministratorMainPage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW5pc3RyYXRvck1haW5QYWdlL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

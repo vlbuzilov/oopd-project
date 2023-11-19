@@ -14,6 +14,7 @@
         <nav>
             @if (@Context.Session.GetInt32("UserType") == 1 && @Context.Session.GetInt32("IsAuthorized") == 1)
             {
+                <a href="/AdministratorMainPage/Classes">Classes</a>
                 <a href="/AdministratorMainPage/Index">Main Page</a>
             }
             @if (@Context.Session.GetInt32("UserType") == 2 && @Context.Session.GetInt32("IsAuthorized") == 1)
