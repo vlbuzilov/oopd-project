@@ -6,6 +6,7 @@ namespace oopd_project.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public Coach Coach { get; set; }
+		public decimal Price { get; set; }
 		public int MaxNumberOfPeople { get; set; }
 		public int CurrentNumberOfPeople { get; set; }
 		public string Description { get; set; }

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using oopd_project.DBContext.DBModels;
 using oopd_project.Models;
+using Class = oopd_project.Models.Class;
+using Schedule = oopd_project.Models.Schedule;
 
 namespace oopd_project.Controllers
 {
@@ -13,15 +16,55 @@ namespace oopd_project.Controllers
         public IActionResult Index()
         {
             var schedule = GetCurrentClubSchedule();
-            schedule._AvailableClasses = GetAvailableClasses();
+            schedule._AvailableClasses = GetAvailableClassesForSchedule();
             return View("Index", schedule);
         }
         
         public IActionResult Classes()
         {
-            return View("Classes");
+            var availableClasses = GetAvailableClasses();
+            var classes = new Classes();
+            classes.AvailableClasses = availableClasses;
+            return View("Classes", classes);
         }
 
+        public IActionResult Subscriptions()
+        {
+            var availableSubscriptionTypes = GetSubscriptionTypes();
+            var availableClasses = GetAvailableClasses();
+            var subscriptions = new Subscriptions
+            {
+                SubscriptionTypes = availableSubscriptionTypes,
+                AvailableClasses = availableClasses
+            };
+           
+            return View("Subscriptions", subscriptions);
+        }
+
+        public IActionResult CreateSubscription(Subscriptions subscriptions, int[] SelectedClasses)
+        {
+            subscriptions.SubscriptionTypeToAdd.ClassesInSubscription = SelectedClasses.ToList();
+
+            AddNewSubscriptionType(subscriptions);
+            
+            return Subscriptions();
+        }
+
+        public IActionResult AddClass(Classes classes)
+        {
+            using DataBaseContext db = new DataBaseContext();
+            DBContext.DBModels.Class classToAdd = new DBContext.DBModels.Class
+            {
+                Class_Name = classes.ClassToAdd.Name,
+                Description = classes.ClassToAdd.Description,
+                Duration = classes.ClassToAdd.Duration.TotalHours,
+                Max_Participants = classes.ClassToAdd.MaxNumberOfPeople
+            };
+            db.Classes.Add(classToAdd);
+            db.SaveChanges();
+            return Classes();
+        }
+        
         public IActionResult DeclineClass(int scheduleItemId)
         {
             DeclineScheduleItemFromDB(scheduleItemId);
@@ -49,11 +92,11 @@ namespace oopd_project.Controllers
                 }
             }
             var schedule = GetCurrentClubSchedule();
-            schedule._AvailableClasses = GetAvailableClasses();
+            schedule._AvailableClasses = GetAvailableClassesForSchedule();
             return Index();
         }
 
-        private List<Class> GetAvailableClasses()
+        private List<Class> GetAvailableClassesForSchedule()
         {
             List<Class> availableClasses = new List<Class>();
 
@@ -66,10 +109,35 @@ namespace oopd_project.Controllers
                     var availableClass = new Class
                     {
                         Id = item.Class_ID,
-                        Name = item.Class_Name
+                        Name = item.Class_Name,
+                        MaxNumberOfPeople = item.Max_Participants,
+                        Description = item.Description,
+                        Duration = TimeSpan.FromHours(item.Duration),
                     };  
                     availableClasses.Add(availableClass);
                 }
+            }
+
+            return availableClasses;
+        }
+        
+        private List<Class> GetAvailableClasses()
+        {
+            List<Class> availableClasses = new List<Class>();
+
+            using DataBaseContext db = new DataBaseContext();
+            var currentClassesList = db.Classes.ToList();
+            foreach (var item in currentClassesList)
+            {
+                    var availableClass = new Class
+                    {
+                        Id = item.Class_ID,
+                        Name = item.Class_Name,
+                        MaxNumberOfPeople = item.Max_Participants,
+                        Description = item.Description,
+                        Duration = TimeSpan.FromHours(item.Duration),
+                    };  
+                    availableClasses.Add(availableClass);
             }
 
             return availableClasses;
@@ -137,8 +205,65 @@ namespace oopd_project.Controllers
                 return Schedule;
             }
         }
-        
-        
+
+        private List<SubscriptionType> GetSubscriptionTypes()
+        {
+            var subscriptionTypes = new List<SubscriptionType>();
+            using DataBaseContext db = new DataBaseContext();
+            
+            var currentSubscriptionTypes = db.Subscription_Types.ToList();
+            foreach (var item in currentSubscriptionTypes)
+            {
+                var subscriptionType = new SubscriptionType
+                {
+                    Subscription_Type_ID = item.Subscription_Type_ID,
+                    Subscription_Type_Name = item.Subscription_Type_Name,
+                    Price = item.Price,
+                    IsAvailable = item.isAvailable
+                };  
+                subscriptionTypes.Add(subscriptionType);
+            }
+
+            return subscriptionTypes;
+        }
+
+        private void AddNewSubscriptionType(Subscriptions subscriptions)
+        {
+            var newType = new Subscription_Type
+            {
+                Subscription_Type_Name = subscriptions.SubscriptionTypeToAdd.Subscription_Type_Name,
+                Price = subscriptions.SubscriptionTypeToAdd.Price,
+                isAvailable = true,
+                Duration = 30
+            };
+            
+            using DataBaseContext db = new DataBaseContext();
+            db.Subscription_Types.Add(newType);
+            db.SaveChanges();
+
+            int newSubscriptionTypeId = db.Subscription_Types
+                .Where(t => t.Subscription_Type_Name == newType.Subscription_Type_Name)
+                .Select(t => t.Subscription_Type_ID)
+                .FirstOrDefault();
+            
+            foreach (var classId in subscriptions.SubscriptionTypeToAdd.ClassesInSubscription)
+            {
+                try
+                {
+                    db.Subscription_Classes.Add(new SubscriptionClass
+                    {
+                        Subscription_ID = newSubscriptionTypeId,
+                        Class_ID = classId
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            db.SaveChanges();
+        }
     }
 }
 

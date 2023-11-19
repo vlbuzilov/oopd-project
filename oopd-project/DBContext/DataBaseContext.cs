@@ -25,6 +25,20 @@ namespace oopd_project
         {
             bool res = Database.EnsureCreated();
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Schedule>()
+                .HasOne(s => s.Class)
+                .WithMany(c => c.Schedule)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SubscriptionClass>()
+                .HasOne(sc => sc.Class)
+                .WithMany(c => c.Subscription_Classes)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

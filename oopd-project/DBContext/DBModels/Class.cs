@@ -16,6 +16,9 @@ namespace oopd_project.DBContext.DBModels
 
         [ForeignKey("Coach_ID")]
         public virtual Coach Coach { get; set; }
+        
+        public virtual ICollection<Schedule> Schedule { get; set; }
+        public virtual ICollection<SubscriptionClass> Subscription_Classes { get; set; }
     }
 }
 

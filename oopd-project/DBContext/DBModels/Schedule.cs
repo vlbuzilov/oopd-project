@@ -12,8 +12,8 @@ namespace oopd_project.DBContext.DBModels
 		public DateTime Date_Time { get; set; }
 		public bool IsAvailable { get; set; }
 
-        [ForeignKey("Class_ID")]
-        public virtual Class Class { get; set; }
-    }
+		[ForeignKey("Class_ID")]
+		public virtual Class Class { get; set; }
+	}
 }
 

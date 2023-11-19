@@ -1,0 +1,62 @@
+@model Subscriptions
+
+@{
+    ViewData["Title"] = "Subscription Types";
+}
+
+<h2 class="mb-4">Create New Subscription</h2>
+
+<form asp-controller="AdministratorMainPage" asp-action="CreateSubscription" method="post">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label asp-for="@Model.SubscriptionTypeToAdd.Subscription_Type_Name">Subscription Type Name:</label>
+            <input type="text" asp-for="@Model.SubscriptionTypeToAdd.Subscription_Type_Name" class="form-control" required />
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="@Model.SubscriptionTypeToAdd.Price">Price:</label>
+            <input type="number" asp-for="@Model.SubscriptionTypeToAdd.Price" class="form-control" required />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label>Available Classes:</label>
+            <div>
+                @foreach (var classItem in Model.AvailableClasses)
+                {
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="SelectedClasses" value="@classItem.Id" class="form-check-input class-checkbox" />
+                        <label class="form-check-label">@classItem.Name</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Subscribe</button>
+</form>
+
+
+<hr />
+
+<h2 class="mt-4">Existing Subscriptions</h2>
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Available</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subscriptionType in Model.SubscriptionTypes)
+        {
+            <tr>
+                <td>@subscriptionType.Subscription_Type_Name</td>
+                <td>@subscriptionType.Price</td>
+                <td>@(subscriptionType.IsAvailable ? "Yes" : "No")</td>
+            </tr>
+        }
+    </tbody>
+</table>

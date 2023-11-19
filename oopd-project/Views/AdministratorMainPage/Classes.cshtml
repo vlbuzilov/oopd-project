@@ -1,37 +1,57 @@
-@model List<Class>;
+@model Classes;
 
 @{
     ViewData["Title"] = "Classes Page";
 }
+
 <h2 class="mb-4">Classes Management</h2> 
 
-@if (Model != null && Model.Any())
+<h4>Add New Class</h4>
+
+<form asp-controller="AdministratorMainPage" asp-action="AddClass" method="post">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="@Model.ClassToAdd.Name">Class Name:</label>
+            <input asp-for="@Model.ClassToAdd.Name" class="form-control" />
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="@Model.ClassToAdd.Description">Description:</label>
+            <input asp-for="@Model.ClassToAdd.Description" class="form-control" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="@Model.ClassToAdd.MaxNumberOfPeople">Max Number of People:</label>
+            <input asp-for="@Model.ClassToAdd.MaxNumberOfPeople" class="form-control" />
+        </div>
+        <div class="form-group col-md-2">
+            <label asp-for="@Model.ClassToAdd.Duration">Duration:</label>
+            <input asp-for="@Model.ClassToAdd.Duration" type="time" class="form-control" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Class</button>
+</form>
+
+@if (Model.AvailableClasses != null && Model.AvailableClasses.Any())
 {
-    <div class="table-responsive">
+    <div class="table-responsive mt-4">
         <table class="table table-hover">
             <thead class="thead-dark">
-            <tr>
-                <th>Class name</th>
-                <th>Description</th>
-                <th>Max number of people</th>
-                <th>Duration</th>
-            </tr>
+                <tr>
+                    <th>Class name</th>
+                    <th>Description</th>
+                    <th>Max number of people</th>
+                    <th>Duration</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Description</td>
-                    <td>@item.MaxNumberOfPeople</td>
-                    <td>@item.Duration.ToString("hh':'mm")</td>
-                    <td>
-                        <div class="btn-group btn-group-sm">
-                            <a asp-controller="CoachMainPage" asp-action="TakeClass" asp-route-id="@item.Id" class="btn btn-primary">Take it</a>
-                        </div>
-                    </td>
-                </tr>
-            }
+                @foreach (var item in Model.AvailableClasses)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>@item.MaxNumberOfPeople</td>
+                        <td>@item.Duration.ToString("hh':'mm")</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -39,6 +59,6 @@
 else
 {
     <div class="alert alert-info mt-4"> 
-        <p>No unassigned classes now</p>
+        <p>No available classes right now</p>
     </div>
 }
