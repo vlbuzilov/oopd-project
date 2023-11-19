@@ -33,12 +33,16 @@ main {
 }
 
 footer {
-    margin-top: auto;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     text-align: center;
-    padding: 10px;
-    background-color: #333;
+    padding: 7px;
+    background-color: rgba(51, 51, 51, 0.3); 
     color: #fff;
 }
+
+
 
 header {
     display: flex;
@@ -125,4 +129,24 @@ input.form-control {
 
 h1_profile {
     color: #007bff;
+}
+
+.list-group {
+    max-width: 400px; 
+    margin: 0 auto; 
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge {
+    font-size: 1rem;
+}
+
+.row{
+    margin-top: 35px;
+    margin-bottom: 30px;
 }
