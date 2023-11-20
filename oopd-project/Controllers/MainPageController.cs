@@ -17,7 +17,7 @@ namespace oopd_project.Controllers
         public static int? ClientId;
         public IActionResult Index()
         {
-            MakeSubscriptionsUnavailable();
+            DeleteUnactiveSubscriptions();
             
             ClientId = HttpContext.Session.GetInt32("UserId");
 
@@ -172,16 +172,20 @@ namespace oopd_project.Controllers
                 .Select(s => s.Subscription_Type_ID)
                 .FirstOrDefault();
             
-            HttpContext.Session.SetString("SubscriptionType",GetSubscriptionTypeById(subscriptionId).Subscription_Type_Name);
-
             if (subscriptionId != 0)
             {
+                HttpContext.Session.SetString("SubscriptionType",GetSubscriptionTypeById(subscriptionId).Subscription_Type_Name);   
                 var startingDate = db.Subscriptions
                     .Where(s => s.Client_ID == ClientId)
                     .Select(s => s.Starting_Date)
                     .FirstOrDefault();
                 
                 HttpContext.Session.SetString("SubscriptionStartingDate",startingDate.ToString());
+            }
+            else
+            {
+                HttpContext.Session.SetString("SubscriptionType", "You haven't got subscription yet");   
+                HttpContext.Session.SetString("SubscriptionStartingDate", DateTime.MinValue.ToString());
             }
         }
         
@@ -270,7 +274,16 @@ namespace oopd_project.Controllers
 
             return coaches;
         }
-        
+
+        private void DeleteUnactiveSubscriptions()
+        {
+            MakeSubscriptionsUnavailable();
+            
+            using DataBaseContext db = new DataBaseContext();
+            var unactiveSubscriptions = db.Subscriptions.Where(s => s.isActive == false).ToList();
+            db.Subscriptions.RemoveRange(unactiveSubscriptions);
+            db.SaveChanges();
+        }
     }
 }
 

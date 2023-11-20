@@ -49,7 +49,7 @@ namespace oopd_project.Controllers
             {
                 var coachCurrentList = db.Schedule
                     .Include(s => s.Class)
-                    .Where(s => s.Class.Coach_ID == _coachId.Value && s.Date_Time > DateTime.Now && s.Date_Time < DateTime.Now.AddDays(7))  
+                    .Where(s => s.Class.Coach_ID == _coachId && s.Date_Time > DateTime.Now && s.Date_Time < DateTime.Now.AddDays(7))  
                     .ToList();
 
                 foreach (var item in coachCurrentList)
@@ -58,7 +58,7 @@ namespace oopd_project.Controllers
                     {
                         Class = new Class()
                         {
-                            Id = item.Schedule_Item_ID,
+                            Id = item.Class_ID,
                             Name = item.Class.Class_Name,
                             Duration =TimeSpan.FromHours(item.Class.Duration),
                             Description = item.Class.Description,
@@ -66,12 +66,6 @@ namespace oopd_project.Controllers
                         },
                         DateTime = item.Date_Time
                     };
-                    
-                    scheduleItem.Class.CurrentNumberOfPeople = db.Clients_Classes
-                        .Where(cc => cc.Schedule_Item_Id == item.Schedule_Item_ID)
-                        .Select(cc => cc.Current_Clients_Number)
-                        .FirstOrDefault(); 
-
                     
                     coachSchedule._Schedule.Add(scheduleItem);
                 }

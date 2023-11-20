@@ -35,7 +35,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th>Class name</th>
-                    <th>Participants</th>
+                    <th>Max Participants</th>
                     <th>Day</th>
                     <th>Time</th>
                     <th>Duration</th>
@@ -47,7 +47,7 @@
                 {
                     <tr>
                         <td>@item.Class.Name</td>
-                        <td>@item.Class.CurrentNumberOfPeople / @item.Class.MaxNumberOfPeople</td>
+                        <td>@item.Class.MaxNumberOfPeople</td>
                         <td>@item.DateTime.ToString("MM/dd/yyyy")</td>
                         <td>@item.DateTime.ToString("hh:mm tt")</td>
                         <td>@item.Class.Duration.ToString("hh':'mm")</td>

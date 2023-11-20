@@ -10,13 +10,13 @@
 }
 
 <style>
-    h4{
-    margin-bottom: 20px;
-    margin-top: 20px;
+    h4 {
+        margin-bottom: 20px;
+        margin-top: 20px;
     }
 </style>
 
-@if (!string.IsNullOrEmpty(subscriptionType))
+@if (subscriptionType != "You haven't got subscription yet")
 {
     <div class="current-subscription">
         <h4>Your Current Subscription</h4>
@@ -28,6 +28,13 @@
         </p>
     </div>
 }
+else
+{
+    <div class="current-subscription">
+        <h4>@subscriptionType</h4>
+    </div>
+}
+
 <div class="row">
     <div class="col-md-12 mt-3 mb-3">
         <h2 class="text-center">Subscriptions</h2>
@@ -58,10 +65,20 @@
                             }
                         }
                     </ul>
-                    <form method="post" asp-action="BuySubscription">
-                        <input type="hidden" name="subscriptionId" value="@subscription.Subscription_Type_ID" />
-                        <button type="submit" class="btn btn-primary">Buy</button>
-                    </form>
+
+                    @if (subscriptionType == subscription.Subscription_Type_Name)
+                    {
+                        <div class="alert alert-info" role="alert">
+                            You already have this subscription.
+                        </div>
+                    }
+                    else
+                    {
+                        <form method="post" asp-action="BuySubscription">
+                            <input type="hidden" name="subscriptionId" value="@subscription.Subscription_Type_ID" />
+                            <button type="submit" class="btn btn-primary" @if (subscriptionType != "You haven't got subscription yet") { <text>disabled</text> }>Buy</button>
+                        </form>
+                    }
                 </div>
             </div>
         }

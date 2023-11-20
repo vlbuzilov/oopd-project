@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Subscribe</button>
+    <button type="submit" class="btn btn-primary">Add</button>
 </form>
 
 
@@ -56,6 +56,12 @@
                 <td>@subscriptionType.Subscription_Type_Name</td>
                 <td>@subscriptionType.Price</td>
                 <td>@(subscriptionType.IsAvailable ? "Yes" : "No")</td>
+                <td>
+                    <form method="post" asp-controller="AdministratorMainPage" asp-action="DeleteSubscription">
+                        <input type="hidden" name="subscriptionTypeId" value="@subscriptionType.Subscription_Type_ID"/>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                    </td>
             </tr>
         }
     </tbody>

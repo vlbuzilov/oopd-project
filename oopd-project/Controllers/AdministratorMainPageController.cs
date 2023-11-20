@@ -15,6 +15,7 @@ namespace oopd_project.Controllers
     {
         public IActionResult Index()
         {
+            ClearUnavailableScheduleItems();
             var schedule = GetCurrentClubSchedule();
             schedule._AvailableClasses = GetAvailableClassesForSchedule();
             return View("Index", schedule);
@@ -94,6 +95,19 @@ namespace oopd_project.Controllers
             var schedule = GetCurrentClubSchedule();
             schedule._AvailableClasses = GetAvailableClassesForSchedule();
             return Index();
+        }
+
+        public IActionResult DeleteClass(int classId)
+        {
+            DeleteClassFromDB(classId);
+            
+            return Classes();
+        }
+
+        public IActionResult DeleteSubscription(int subscriptionTypeId)
+        {
+            DeleteSubscriptionFromDB(subscriptionTypeId);
+            return Subscriptions();
         }
 
         private List<Class> GetAvailableClassesForSchedule()
@@ -193,12 +207,6 @@ namespace oopd_project.Controllers
                         DateTime = item.Date_Time
                     };
 
-                    scheduleItem.Class.CurrentNumberOfPeople = db.Clients_Classes
-                        .Where(cc => cc.Schedule_Item_Id == item.Schedule_Item_ID)
-                        .Select(cc => cc.Current_Clients_Number)
-                        .FirstOrDefault();
-
-
                     Schedule._Schedule.Add(scheduleItem);
                 }
 
@@ -263,6 +271,53 @@ namespace oopd_project.Controllers
             }
 
             db.SaveChanges();
+        }
+
+        private void ClearUnavailableScheduleItems()
+        {
+            using DataBaseContext db = new DataBaseContext();
+
+            var UnavailableScheduleItems = db.Schedule
+                .Where(s => s.IsAvailable == false && s.Date_Time < DateTime.Now)
+                .ToList();
+
+            if (UnavailableScheduleItems != null && UnavailableScheduleItems.Count != 0)
+            {
+                db.Schedule.RemoveRange(UnavailableScheduleItems);
+                db.SaveChanges();   
+            }
+        }
+
+        private void DeleteClassFromDB(int classId)
+        {
+            using DataBaseContext db = new DataBaseContext();
+
+            var classToDelete = db.Classes.FirstOrDefault(c => c.Class_ID == classId);
+            db.Remove(classToDelete);
+            db.SaveChanges();
+        }
+
+        private void DeleteSubscriptionFromDB(int id)
+        {
+            using DataBaseContext db = new DataBaseContext();
+
+            var subscriptionRelations = db.Subscription_Classes
+                .Where(s => s.Subscription_ID == id)
+                .ToList();
+            
+            if (subscriptionRelations != null && subscriptionRelations.Count != 0)
+            {
+                db.Subscription_Classes.RemoveRange(subscriptionRelations);
+
+                var subscriptionTypeToRemove = db.Subscription_Types
+                    .FirstOrDefault(s => s.Subscription_Type_ID == id);
+
+                if (subscriptionTypeToRemove != null)
+                {
+                    db.Subscription_Types.Remove(subscriptionTypeToRemove);
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }

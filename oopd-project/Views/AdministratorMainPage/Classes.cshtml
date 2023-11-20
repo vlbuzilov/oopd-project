@@ -50,6 +50,12 @@
                         <td>@item.Description</td>
                         <td>@item.MaxNumberOfPeople</td>
                         <td>@item.Duration.ToString("hh':'mm")</td>
+                        <td>
+                            <form method="post" asp-controller="AdministratorMainPage" asp-action="DeleteClass">
+                                <input type="hidden" name="classId" value="@item.Id"/>
+                                <button type="submit" class="btn btn-danger">Delete Class</button>
+                            </form>
+                            </td>
                     </tr>
                 }
             </tbody>
