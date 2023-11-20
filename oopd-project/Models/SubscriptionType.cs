@@ -8,5 +8,6 @@ public class SubscriptionType
     public double Duration { get; set; }
     public bool IsAvailable { get; set; }
     
+    public List<Class> Classes { get; set; }
     public List<int> ClassesInSubscription { get; set; }
 }

@@ -3,7 +3,7 @@ namespace oopd_project.Models
 {
 	public class Subscription
 	{
-		public string SubscriptionType { get; set; }
+		public SubscriptionType SubscriptionType { get; set; }
 		public DateTime StartingDate { get; set; }
 		public int Duration { get; set; }
 		public DateTime EndingDate { get; set; }

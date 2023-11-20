@@ -1,0 +1,38 @@
+@model SubscriptionType
+
+@{
+    ViewData["Title"] = "Buy Subscription";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<style>
+    h3{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    }
+</style>
+<h3>You need to pay: @Model.Price</h3>
+
+<form method="post" asp-action="SetSubscription">
+    <div class="form-group col-md-6">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="expirationDate">Expiration Date</label>
+            <input type="text" class="form-control" id="expirationDate" name="expirationDate" placeholder="MM/YYYY" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="cvv">CVV</label>
+            <input type="password" class="form-control" id="cvv" name="cvv" required>
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="cardHolderName">Cardholder Name</label>
+        <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" required>
+    </div>
+    <input type="hidden" name="subscriptionId" value="@Model.Subscription_Type_ID" />
+    <button type="submit" class="btn btn-primary">Buy Subscription</button>
+</form>

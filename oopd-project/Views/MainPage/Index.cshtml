@@ -1,5 +1,9 @@
 ﻿@model HomePage
 
+@{
+    ViewData["Title"] = "Client Main Page";
+}
+
 <style>
     .static-gym-image {
         object-fit: cover;
@@ -70,7 +74,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12 mt-3 mb-3">
+    <div class="col-md-12 mt-3 mb-3 text-center">
             <h2 class="text-center">Subscriptions</h2>
             <ul class="list-group">
                 @foreach (var subscription in Model.Subscriptions)
@@ -80,7 +84,7 @@
                     </li>
                 }
             </ul>
-            <button type="button" class="btn btn-primary btn-lg btn-block mt-3">Buy Subscription</button>
+        <a asp-action="Subscriptions" class="btn btn-primary btn-lg btn-block mt-3">More...</a>
         </div>
     </div>
     <div></div>

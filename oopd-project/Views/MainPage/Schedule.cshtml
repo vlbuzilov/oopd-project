@@ -1,0 +1,36 @@
+@model List<ClientScheduleItem>
+
+@if (Model.Count != 0)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Class Name</th>
+            <th>Max Participants</th>
+            <th>Description</th>
+            <th>Duration</th>
+            <th>Dates and Times</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var scheduleItem in Model)
+        {
+            @foreach (var dateTime in scheduleItem.DateTimes)
+            {
+                <tr>
+                    <td>@scheduleItem.Class?.Name</td>
+                    <td>@scheduleItem.Class?.MaxNumberOfPeople</td>
+                    <td>@scheduleItem.Class?.Description</td>
+                    <td>@scheduleItem.Class?.Duration</td>
+                    <td>@dateTime.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+}
+else{
+<div class="alert alert-info mt-4"> 
+    <p>No available classes now, but you can visit our gym :)</p>
+</div>
+}

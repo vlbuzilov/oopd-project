@@ -52,8 +52,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTG9naW4vTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/MainPage/BuyingPage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFpblBhZ2UvQnV5aW5nUGFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/MainPage/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFpblBhZ2UvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/MainPage/Schedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFpblBhZ2UvU2NoZWR1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/MainPage/Subscriptions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWFpblBhZ2UvU3Vic2NyaXB0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/vladbuzilov/Desktop/Studying/oopd/oopd-project/oopd-project/Views/Profile/AdminProfile.cshtml]

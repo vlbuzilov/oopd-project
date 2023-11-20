@@ -1,0 +1,69 @@
+@model Subscriptions
+
+@{
+    ViewData["Title"] = "Subscriptions";
+}
+
+@{
+    var subscriptionType = Context.Request.HttpContext.Session.GetString("SubscriptionType");
+    var subscriptionStartingDate = DateTime.Parse(Context.Request.HttpContext.Session.GetString("SubscriptionStartingDate"));
+}
+
+<style>
+    h4{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(subscriptionType))
+{
+    <div class="current-subscription">
+        <h4>Your Current Subscription</h4>
+        <p>
+            Subscription Type: <strong>@subscriptionType</strong>
+        </p>
+        <p>
+            Expiration Date: <strong>@subscriptionStartingDate.AddDays(30).ToString("MMMM dd, yyyy")</strong>
+        </p>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12 mt-3 mb-3">
+        <h2 class="text-center">Subscriptions</h2>
+
+        @foreach (var subscription in Model.SubscriptionTypes)
+        {
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="card-title">@subscription.Subscription_Type_Name</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Price: @subscription.Price; Duration: @subscription.Duration days</h6>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Classes:</p>
+                    <ul>
+                        @foreach (var _class in subscription.Classes)
+                        {
+                            if (_class.Description != null && _class.Name != null)
+                            {
+                                <li>
+                                    <strong>@_class.Name</strong>: @_class.Description
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <strong>No classes in subscription, just visit our gym:)</strong>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <form method="post" asp-action="BuySubscription">
+                        <input type="hidden" name="subscriptionId" value="@subscription.Subscription_Type_ID" />
+                        <button type="submit" class="btn btn-primary">Buy</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

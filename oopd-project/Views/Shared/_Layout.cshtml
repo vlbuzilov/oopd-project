@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/oopd_project.styles.css" asp-append-version="true" />
     
+    
 </head>
 <body>
 <header>
@@ -27,6 +28,8 @@
         @if (@Context.Session.GetInt32("UserType") == 3 && @Context.Session.GetInt32("IsAuthorized") == 1)
         {
             <a href="/MainPage/Index">Main Page</a>
+            <a href="/MainPage/GetSchedule">Schedule</a>
+            <a href="/MainPage/Subscriptions">Subscriptions</a>
         }
 
         @if (@Context.Session.GetInt32("IsAuthorized") != 1)

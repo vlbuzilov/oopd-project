@@ -32,12 +32,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DBContext\" />
-    <Folder Include="DBContext\DBModels\" />
     <Folder Include="Views\ClientRegistration\" />
     <Folder Include="Views\AdministratorRegistration\" />
     <Folder Include="Views\CoachRegistration\" />
     <Folder Include="Views\Login\" />
-    <Folder Include="Views\MainPage\" />
     <Folder Include="Views\Profile\" />
   </ItemGroup>
 </Project>
