@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oopd_project.DBContext.DBModels;
@@ -114,21 +115,35 @@ namespace oopd_project.Controllers
         {
             List<Class> availableClasses = new List<Class>();
 
-            using DataBaseContext db = new DataBaseContext();
-            var currentClassesList = db.Classes.ToList();
-            foreach (var item in currentClassesList)
+            using (var scope = new TransactionScope())
             {
-                if (item.Coach_ID != null)
+                try
                 {
-                    var availableClass = new Class
+                    using (DataBaseContext db = new DataBaseContext())
                     {
-                        Id = item.Class_ID,
-                        Name = item.Class_Name,
-                        MaxNumberOfPeople = item.Max_Participants,
-                        Description = item.Description,
-                        Duration = TimeSpan.FromHours(item.Duration),
-                    };  
-                    availableClasses.Add(availableClass);
+                        // Your existing logic to fetch classes from the database
+                        var currentClassesList = db.Classes.ToList();
+                        foreach (var item in currentClassesList)
+                        {
+                            if (item.Coach_ID != null)
+                            {
+                                var availableClass = new Class
+                                {
+                                    Id = item.Class_ID,
+                                    Name = item.Class_Name,
+                                    MaxNumberOfPeople = item.Max_Participants,
+                                    Description = item.Description,
+                                    Duration = TimeSpan.FromHours(item.Duration),
+                                };
+                                availableClasses.Add(availableClass);
+                            }
+                        }
+                        scope.Complete();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
 
@@ -139,19 +154,33 @@ namespace oopd_project.Controllers
         {
             List<Class> availableClasses = new List<Class>();
 
-            using DataBaseContext db = new DataBaseContext();
-            var currentClassesList = db.Classes.ToList();
-            foreach (var item in currentClassesList)
+            using (var scope = new TransactionScope())
             {
-                    var availableClass = new Class
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
                     {
-                        Id = item.Class_ID,
-                        Name = item.Class_Name,
-                        MaxNumberOfPeople = item.Max_Participants,
-                        Description = item.Description,
-                        Duration = TimeSpan.FromHours(item.Duration),
-                    };  
-                    availableClasses.Add(availableClass);
+                        var currentClassesList = db.Classes.ToList();
+                        foreach (var item in currentClassesList)
+                        {
+                            var availableClass = new Class
+                            {
+                                Id = item.Class_ID,
+                                Name = item.Class_Name,
+                                MaxNumberOfPeople = item.Max_Participants,
+                                Description = item.Description,
+                                Duration = TimeSpan.FromHours(item.Duration),
+                            };
+                            availableClasses.Add(availableClass);
+                        }
+                        
+                        scope.Complete();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
             return availableClasses;
@@ -159,18 +188,23 @@ namespace oopd_project.Controllers
         
         private void DeclineScheduleItemFromDB(int id)
         {
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
                 try
                 {
-                    var existingClass = db.Schedule.Find(id);
-                    if (existingClass != null)
+                    using (DataBaseContext db = new DataBaseContext())
                     {
-                        existingClass.IsAvailable = false;
-                        db.SaveChanges();
+                        var existingClass = db.Schedule.Find(id);
+                        if (existingClass != null)
+                        {
+                            existingClass.IsAvailable = false;
+                            db.SaveChanges();
+                        }
+                        
+                        scope.Complete();
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -179,90 +213,43 @@ namespace oopd_project.Controllers
         
         private Schedule GetCurrentClubSchedule()
         {
-            Schedule Schedule = new Schedule
+            Schedule schedule = new Schedule
             {
                 _Schedule = new List<ScheduleItem>()
             };
 
-            using (DataBaseContext db = new DataBaseContext())
-            {
-                var CurrentScheduleList = db.Schedule
-                    .Include(s => s.Class).ThenInclude(@class => @class.Coach)
-                    .Where(s => s.IsAvailable == true)
-                    .OrderBy(s => s.Date_Time)
-                    .ToList();
-
-                foreach (var item in CurrentScheduleList)
-                {
-                    var scheduleItem = new ScheduleItem()
-                    {
-                        Class = new Class()
-                        {
-                            Name = item.Class.Class_Name,
-                            Duration = TimeSpan.FromHours(item.Class.Duration),
-                            Description = item.Class.Description,
-                            MaxNumberOfPeople = item.Class.Max_Participants
-                        },
-                        ScheduleItemId = item.Schedule_Item_ID,
-                        DateTime = item.Date_Time
-                    };
-
-                    Schedule._Schedule.Add(scheduleItem);
-                }
-
-                return Schedule;
-            }
-        }
-
-        private List<SubscriptionType> GetSubscriptionTypes()
-        {
-            var subscriptionTypes = new List<SubscriptionType>();
-            using DataBaseContext db = new DataBaseContext();
-            
-            var currentSubscriptionTypes = db.Subscription_Types.ToList();
-            foreach (var item in currentSubscriptionTypes)
-            {
-                var subscriptionType = new SubscriptionType
-                {
-                    Subscription_Type_ID = item.Subscription_Type_ID,
-                    Subscription_Type_Name = item.Subscription_Type_Name,
-                    Price = item.Price,
-                    IsAvailable = item.isAvailable
-                };  
-                subscriptionTypes.Add(subscriptionType);
-            }
-
-            return subscriptionTypes;
-        }
-
-        private void AddNewSubscriptionType(Subscriptions subscriptions)
-        {
-            var newType = new Subscription_Type
-            {
-                Subscription_Type_Name = subscriptions.SubscriptionTypeToAdd.Subscription_Type_Name,
-                Price = subscriptions.SubscriptionTypeToAdd.Price,
-                isAvailable = true,
-                Duration = 30
-            };
-            
-            using DataBaseContext db = new DataBaseContext();
-            db.Subscription_Types.Add(newType);
-            db.SaveChanges();
-
-            int newSubscriptionTypeId = db.Subscription_Types
-                .Where(t => t.Subscription_Type_Name == newType.Subscription_Type_Name)
-                .Select(t => t.Subscription_Type_ID)
-                .FirstOrDefault();
-            
-            foreach (var classId in subscriptions.SubscriptionTypeToAdd.ClassesInSubscription)
+            using (var scope = new TransactionScope())
             {
                 try
                 {
-                    db.Subscription_Classes.Add(new SubscriptionClass
+                    using (DataBaseContext db = new DataBaseContext())
                     {
-                        Subscription_ID = newSubscriptionTypeId,
-                        Class_ID = classId
-                    });
+                        var currentScheduleList = db.Schedule
+                            .Include(s => s.Class).ThenInclude(@class => @class.Coach)
+                            .Where(s => s.IsAvailable == true)
+                            .OrderBy(s => s.Date_Time)
+                            .ToList();
+
+                        foreach (var item in currentScheduleList)
+                        {
+                            var scheduleItem = new ScheduleItem()
+                            {
+                                Class = new Class()
+                                {
+                                    Name = item.Class.Class_Name,
+                                    Duration = TimeSpan.FromHours(item.Class.Duration),
+                                    Description = item.Class.Description,
+                                    MaxNumberOfPeople = item.Class.Max_Participants
+                                },
+                                ScheduleItemId = item.Schedule_Item_ID,
+                                DateTime = item.Date_Time
+                            };
+
+                            schedule._Schedule.Add(scheduleItem);
+                        }
+                        
+                        scope.Complete();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -270,55 +257,181 @@ namespace oopd_project.Controllers
                 }
             }
 
-            db.SaveChanges();
+            return schedule;
         }
-
-        private void ClearUnavailableScheduleItems()
+        
+        private List<SubscriptionType> GetSubscriptionTypes()
         {
-            using DataBaseContext db = new DataBaseContext();
+            List<SubscriptionType> subscriptionTypes = new List<SubscriptionType>();
 
-            var UnavailableScheduleItems = db.Schedule
-                .Where(s => s.IsAvailable == false && s.Date_Time < DateTime.Now)
-                .ToList();
-
-            if (UnavailableScheduleItems != null && UnavailableScheduleItems.Count != 0)
+            using (var scope = new TransactionScope())
             {
-                db.Schedule.RemoveRange(UnavailableScheduleItems);
-                db.SaveChanges();   
-            }
-        }
-
-        private void DeleteClassFromDB(int classId)
-        {
-            using DataBaseContext db = new DataBaseContext();
-
-            var classToDelete = db.Classes.FirstOrDefault(c => c.Class_ID == classId);
-            db.Remove(classToDelete);
-            db.SaveChanges();
-        }
-
-        private void DeleteSubscriptionFromDB(int id)
-        {
-            using DataBaseContext db = new DataBaseContext();
-
-            var subscriptionRelations = db.Subscription_Classes
-                .Where(s => s.Subscription_ID == id)
-                .ToList();
-            
-            if (subscriptionRelations != null && subscriptionRelations.Count != 0)
-            {
-                db.Subscription_Classes.RemoveRange(subscriptionRelations);
-
-                var subscriptionTypeToRemove = db.Subscription_Types
-                    .FirstOrDefault(s => s.Subscription_Type_ID == id);
-
-                if (subscriptionTypeToRemove != null)
+                try
                 {
-                    db.Subscription_Types.Remove(subscriptionTypeToRemove);
-                    db.SaveChanges();
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var currentSubscriptionTypes = db.Subscription_Types.ToList();
+                        foreach (var item in currentSubscriptionTypes)
+                        {
+                            var subscriptionType = new SubscriptionType
+                            {
+                                Subscription_Type_ID = item.Subscription_Type_ID,
+                                Subscription_Type_Name = item.Subscription_Type_Name,
+                                Price = item.Price,
+                                IsAvailable = item.isAvailable
+                            };
+                            subscriptionTypes.Add(subscriptionType);
+                        }
+                        
+                        scope.Complete();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
                 }
             }
+
+            return subscriptionTypes;
         }
+        
+       private void AddNewSubscriptionType(Subscriptions subscriptions)
+        {
+        using (var scope = new TransactionScope())
+        {
+            try
+            {
+                var newType = new Subscription_Type
+                {
+                    Subscription_Type_Name = subscriptions.SubscriptionTypeToAdd.Subscription_Type_Name,
+                    Price = subscriptions.SubscriptionTypeToAdd.Price,
+                    isAvailable = true,
+                    Duration = 30
+                };
+
+                using (DataBaseContext db = new DataBaseContext())
+                {
+                    db.Subscription_Types.Add(newType);
+                    db.SaveChanges();
+
+                    int newSubscriptionTypeId = db.Subscription_Types
+                        .Where(t => t.Subscription_Type_Name == newType.Subscription_Type_Name)
+                        .Select(t => t.Subscription_Type_ID)
+                        .FirstOrDefault();
+
+                    foreach (var classId in subscriptions.SubscriptionTypeToAdd.ClassesInSubscription)
+                    {
+                        try
+                        {
+                            db.Subscription_Classes.Add(new SubscriptionClass
+                            {
+                                Subscription_ID = newSubscriptionTypeId,
+                                Class_ID = classId
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                    }
+
+                    db.SaveChanges();
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        }
+       
+       private void ClearUnavailableScheduleItems()
+       {
+           using (var scope = new TransactionScope())
+           {
+               try
+               {
+                   using (DataBaseContext db = new DataBaseContext())
+                   {
+                       var unavailableScheduleItems = db.Schedule
+                           .Where(s => s.IsAvailable == false && s.Date_Time < DateTime.Now)
+                           .ToList();
+
+                       if (unavailableScheduleItems != null && unavailableScheduleItems.Count != 0)
+                       {
+                           db.Schedule.RemoveRange(unavailableScheduleItems);
+                           db.SaveChanges();
+                       }
+                       
+                       scope.Complete();
+                   }
+               }
+               catch (Exception ex)
+               {
+                   throw new Exception(ex.Message);
+               }
+           }
+       }
+       
+       private void DeleteClassFromDB(int classId)
+       {
+           using (var scope = new TransactionScope())
+           {
+               try
+               {
+                   using (DataBaseContext db = new DataBaseContext())
+                   {
+                       var classToDelete = db.Classes.FirstOrDefault(c => c.Class_ID == classId);
+                       db.Remove(classToDelete);
+                       db.SaveChanges();
+                       
+                       scope.Complete();
+                   }
+               }
+               catch (Exception ex)
+               {
+                   throw new Exception(ex.Message);
+               }
+           }
+       }
+       
+       private void DeleteSubscriptionFromDB(int id)
+       {
+           using (var scope = new TransactionScope())
+           {
+               try
+               {
+                   using (DataBaseContext db = new DataBaseContext())
+                   {
+                       var subscriptionRelations = db.Subscription_Classes
+                           .Where(s => s.Subscription_ID == id)
+                           .ToList();
+
+                       if (subscriptionRelations != null && subscriptionRelations.Count != 0)
+                       {
+                           db.Subscription_Classes.RemoveRange(subscriptionRelations);
+
+                           var subscriptionTypeToRemove = db.Subscription_Types
+                               .FirstOrDefault(s => s.Subscription_Type_ID == id);
+
+                           if (subscriptionTypeToRemove != null)
+                           {
+                               db.Subscription_Types.Remove(subscriptionTypeToRemove);
+                               db.SaveChanges();
+                           }
+                       }
+                       
+                       scope.Complete();
+                   }
+               }
+               catch (Exception ex)
+               {
+                   throw new Exception(ex.Message);
+               }
+           }
+       }
+
     }
 }
 

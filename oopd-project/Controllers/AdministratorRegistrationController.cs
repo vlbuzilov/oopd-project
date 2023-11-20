@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace oopd_project
@@ -47,35 +48,41 @@ namespace oopd_project
 
         private void AddNewAdmin(Models.Administrator admin)
         {
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
-                var newUser = new DBContext.DBModels.User
-                {
-                    User_Role_ID = 1,
-                    Email = admin.Email,
-                    Password = admin.Password,
-                    Phone_Number = admin.PhoneNumber,
-                    Birthdate = admin.Birthdate
-                };
-
-                db.Users.Add(newUser);
-                db.SaveChanges();
-
-                var newAdmin = new DBContext.DBModels.Administrator
-                {
-                    Name = admin.FirstName,
-                    Last_Name = admin.LastName,
-                    Secret_Key = admin.SecretKey,
-                    User = newUser
-                };
                 try
                 {
-                    db.Administrators.Add(newAdmin);
-                    db.SaveChanges();
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var newUser = new DBContext.DBModels.User
+                        {
+                            User_Role_ID = 1,
+                            Email = admin.Email,
+                            Password = admin.Password,
+                            Phone_Number = admin.PhoneNumber,
+                            Birthdate = admin.Birthdate
+                        };
+
+                        db.Users.Add(newUser);
+                        db.SaveChanges();
+
+                        var newAdmin = new DBContext.DBModels.Administrator
+                        {
+                            Name = admin.FirstName,
+                            Last_Name = admin.LastName,
+                            Secret_Key = admin.SecretKey,
+                            User = newUser
+                        };
+
+                        db.Administrators.Add(newAdmin);
+                        db.SaveChanges();
+
+                        scope.Complete();
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new Exception("Error occurred while trying to add new admin to database");
+                    throw new Exception(ex.Message);
                 }
             }
         }

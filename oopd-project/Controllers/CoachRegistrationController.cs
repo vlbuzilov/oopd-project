@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace oopd_project.Controllers
@@ -41,37 +42,42 @@ namespace oopd_project.Controllers
 
         private void AddNewCoach(Models.Coach coach)
         {
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
                 try
                 {
-                var newUser = new DBContext.DBModels.User
-                {
-                    User_Role_ID = 2,
-                    Email = coach.Email,
-                    Password = coach.Password,
-                    Phone_Number = coach.PhoneNumber,
-                    Birthdate = coach.Birthdate
-                };
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var newUser = new DBContext.DBModels.User
+                        {
+                            User_Role_ID = 2,
+                            Email = coach.Email,
+                            Password = coach.Password,
+                            Phone_Number = coach.PhoneNumber,
+                            Birthdate = coach.Birthdate
+                        };
 
-                db.Users.Add(newUser);
-                db.SaveChanges();
+                        db.Users.Add(newUser);
+                        db.SaveChanges();
 
-                var newCoach = new DBContext.DBModels.Coach
-                {
-                    Name = coach.FirstName,
-                    Last_Name = coach.LastName,
-                    Specialization = coach.Specialization,
-                    Experience = coach.Experience,
-                    User = newUser
-                };
-                
-                    db.Coaches.Add(newCoach);
-                    db.SaveChanges();
+                        var newCoach = new DBContext.DBModels.Coach
+                        {
+                            Name = coach.FirstName,
+                            Last_Name = coach.LastName,
+                            Specialization = coach.Specialization,
+                            Experience = coach.Experience,
+                            User = newUser
+                        };
+
+                        db.Coaches.Add(newCoach);
+                        db.SaveChanges();
+                        
+                        scope.Complete();
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    throw new Exception($"Error occurred while trying to add new admin to database: {ex.Message}");
+                    throw new Exception(ex.Message);
                 }
             }
         }

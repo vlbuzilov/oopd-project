@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,23 +71,35 @@ namespace oopd_project.Controllers
             DateTime birthDate = DateTime.Parse(editedAdmin.Birthdate);
             DBContext.DBModels.Administrator admin = null;
 
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
-                var user = db.Users
-                    .Include(u => u.UserRole)
-                    .FirstOrDefault(u => u.Email == _email && u.Password == _password);
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var user = db.Users
+                            .Include(u => u.UserRole)
+                            .FirstOrDefault(u => u.Email == _email && u.Password == _password);
 
-                if (user != null)
-                {
-                    admin = db.Administrators.FirstOrDefault(admin => admin.User.User_ID == user.User_ID);
+                        if (user != null)
+                        {
+                            admin = db.Administrators.FirstOrDefault(admin => admin.User.User_ID == user.User_ID);
+                        }
+                        if (admin != null)
+                        {
+                            admin.Name = editedAdmin.Name;
+                            admin.Last_Name = editedAdmin.LastName;
+                            user.Phone_Number = editedAdmin.PhoneNumber;
+                            user.Birthdate = birthDate;
+                            db.SaveChanges();
+                        }
+                        
+                        scope.Complete();
+                    }
                 }
-                if (admin != null)
+                catch (Exception ex)
                 {
-                    admin.Name = editedAdmin.Name;
-                    admin.Last_Name = editedAdmin.LastName;
-                    user.Phone_Number = editedAdmin.PhoneNumber;
-                    user.Birthdate = birthDate;
-                    db.SaveChanges();
+                    throw new Exception(ex.Message);
                 }
             }
         }
@@ -96,54 +109,79 @@ namespace oopd_project.Controllers
             DateTime birthDate = DateTime.Parse(editedCoach.Birthdate);
             DBContext.DBModels.Coach coach = null;
 
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
-                var user = db.Users
-                    .Include(u => u.UserRole)
-                    .FirstOrDefault(u => u.Email == _email && u.Password == _password);
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var user = db.Users
+                            .Include(u => u.UserRole)
+                            .FirstOrDefault(u => u.Email == _email && u.Password == _password);
 
-                if (user != null)
-                {
-                    coach = db.Coaches.FirstOrDefault(coach => coach.User.User_ID == user.User_ID);
+                        if (user != null)
+                        {
+                            coach = db.Coaches.FirstOrDefault(coach => coach.User.User_ID == user.User_ID);
+                        }
+
+                        if (coach != null)
+                        {
+                            coach.Name = editedCoach.Name; // Update the coach's name with the new value
+                            coach.Last_Name = editedCoach.LastName;
+                            coach.Specialization = editedCoach.Specialization;
+                            user.Phone_Number = editedCoach.PhoneNumber;
+                            user.Birthdate = birthDate;
+                            db.SaveChanges();
+                        }
+                        scope.Complete();
+                    }
                 }
-                if (coach != null)
+                catch (Exception ex)
                 {
-                    coach.Name = coach.Name;
-                    coach.Last_Name = editedCoach.LastName;
-                    coach.Specialization = editedCoach.Specialization;
-                    user.Phone_Number = editedCoach.PhoneNumber;
-                    user.Birthdate = birthDate;
-                    db.SaveChanges();
+                    throw new Exception(ex.Message);
                 }
             }
         }
-
+        
         private void UpdateClient(Models.EditedDataDTO editedClient)
         {
             DBContext.DBModels.Client client = null;
             DateTime birthDate = DateTime.Parse(editedClient.Birthdate);
 
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
-                var user = db.Users
-                    .Include(u => u.UserRole)
-                    .FirstOrDefault(u => u.Email == _email && u.Password == _password);
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var user = db.Users
+                            .Include(u => u.UserRole)
+                            .FirstOrDefault(u => u.Email == _email && u.Password == _password);
 
-                if (user != null)
-                {
-                    client = db.Clients.FirstOrDefault(client => client.User.User_ID == user.User_ID);
+                        if (user != null)
+                        {
+                            client = db.Clients.FirstOrDefault(client => client.User.User_ID == user.User_ID);
+                        }
+
+                        if (client != null)
+                        {
+                            client.Name = editedClient.Name;
+                            client.Last_Name = editedClient.LastName;
+                            user.Phone_Number = editedClient.PhoneNumber;
+                            user.Birthdate = birthDate;
+                            db.SaveChanges();
+                        }
+                        
+                        scope.Complete();
+                    }
                 }
-                if (client != null)
+                catch (Exception ex)
                 {
-                    client.Name = editedClient.Name;
-                    client.Last_Name = editedClient.LastName;
-                    user.Phone_Number = editedClient.PhoneNumber;
-                    user.Birthdate = birthDate;
-                    db.SaveChanges();
+                    throw new Exception(ex.Message);
                 }
             }
         }
-
+        
         private Models.Administrator GetAdminProfileModel(string email, string password)
         {
             DBContext.DBModels.Administrator admin = null;

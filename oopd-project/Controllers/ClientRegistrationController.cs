@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using oopd_project.Models;
 
@@ -43,41 +44,46 @@ namespace oopd_project.Controllers
 
         private void AddNewClient(Client client)
         {
-            using (DataBaseContext db = new DataBaseContext())
+            using (var scope = new TransactionScope())
             {
-                var newUser = new DBContext.DBModels.User
-                {
-                    User_Role_ID = 3,
-                    Email = client.Email,
-                    Password = client.Password,
-                    Phone_Number = client.PhoneNumber,
-                    Birthdate = client.Birthdate 
-                };
-
-                db.Users.Add(newUser);
-                db.SaveChanges();
-
-                var newClient = new DBContext.DBModels.Client
-                {
-                    Name = client.FirstName,
-                    Last_Name = client.LastName,
-                    Registration_Date = DateTime.Today,
-                    Subscription_ID = null,
-                    User = newUser 
-                };
-
                 try
                 {
-                    db.Clients.Add(newClient);
-                    db.SaveChanges();
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var newUser = new DBContext.DBModels.User
+                        {
+                            User_Role_ID = 3,
+                            Email = client.Email,
+                            Password = client.Password,
+                            Phone_Number = client.PhoneNumber,
+                            Birthdate = client.Birthdate
+                        };
+
+                        db.Users.Add(newUser);
+                        db.SaveChanges();
+
+                        var newClient = new DBContext.DBModels.Client
+                        {
+                            Name = client.FirstName,
+                            Last_Name = client.LastName,
+                            Registration_Date = DateTime.Today,
+                            Subscription_ID = null,
+                            User = newUser
+                        };
+
+                        db.Clients.Add(newClient);
+                        db.SaveChanges();
+                        
+                        scope.Complete();
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new Exception("Error occurred while trying to add new client to database");
+                    throw new Exception(ex.Message);
                 }
             }
         }
-
+        
         private bool IsClientExists(Client client)
         {
             using (DataBaseContext db = new DataBaseContext())

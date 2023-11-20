@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using oopd_project.DBContext.DBModels;
 using oopd_project.Models;
@@ -31,66 +32,10 @@ namespace oopd_project.Controllers
             };
             return View("Index", homePage);
         }
-
         public IActionResult GetSchedule()
         {
             var schedule = GetCurrentScheduleForClient();
             return View("Schedule", schedule);
-        }
-
-        private List<ClientScheduleItem> GetCurrentScheduleForClient()
-        {
-            var currentSchedule = new List<ClientScheduleItem>();
-
-            using DataBaseContext db = new DataBaseContext();
-
-            int subscriptionTypeId = db.Subscriptions
-                .Where(s => s.Client_ID == ClientId)
-                .Select(s => s.Subscription_Type_ID)
-                .FirstOrDefault();
-
-            if (subscriptionTypeId != 0)
-            {
-                var classesId = db.Subscription_Classes
-                    .Where(s => s.Subscription_ID == subscriptionTypeId)
-                    .Select(s => s.Class_ID).ToList();
-
-                DateTime today = DateTime.Today;
-                DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek); 
-                DateTime endOfWeek = startOfWeek.AddDays(7);
-
-                foreach (var classId in classesId)
-                {
-                    var clientScheduleItem = new ClientScheduleItem
-                    {
-                        Class = db.Classes
-                            .Where(c => c.Class_ID == classId)
-                            .Select(c => new Models.Class
-                            {
-                                Id = c.Class_ID,
-                                Name = c.Class_Name,
-                                Description = c.Description,
-                                Duration = TimeSpan.FromHours(c.Duration),
-                                MaxNumberOfPeople = c.Max_Participants,
-                            })
-                            .FirstOrDefault(),
-        
-                        DateTimes = db.Schedule
-                            .Where(s => s.Class_ID == classId && s.Date_Time >= startOfWeek && s.Date_Time < endOfWeek)
-                            .Select(s => s.Date_Time)
-                            .Distinct()
-                            .ToList()
-                    };
-                    if (clientScheduleItem.Class != null && clientScheduleItem.DateTimes.Count != 0)
-                    {
-                        currentSchedule.Add(clientScheduleItem);
-                    }
-                }
-
-
-            }
-            
-            return currentSchedule;
         }
         
         public IActionResult Subscriptions()
@@ -117,35 +62,61 @@ namespace oopd_project.Controllers
 
         private void MakeSubscriptionsUnavailable()
         {
-            using DataBaseContext db = new DataBaseContext();
-            var subscriptionsToUpdate = db.Subscriptions
-                .Where(s => s.Starting_Date.AddDays(30) <= DateTime.Today && s.isActive)
-                .ToList();
-
-            foreach (var subscription in subscriptionsToUpdate)
+            using (var scope = new TransactionScope())
             {
-                subscription.isActive = false;
-            }
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var subscriptionsToUpdate = db.Subscriptions
+                            .Where(s => s.Starting_Date.AddDays(30) <= DateTime.Today && s.isActive)
+                            .ToList();
 
-            db.SaveChanges();
+                        foreach (var subscription in subscriptionsToUpdate)
+                        {
+                            subscription.isActive = false;
+                        }
+
+                        db.SaveChanges();
+                    }
+                    
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
         
         private void SetSubscriptionToClient(int id)
         {
-            using DataBaseContext db = new DataBaseContext();
-            
-            var newSubscription = new Subscription
+            using (var scope = new TransactionScope())
             {
-                Client_ID = ClientId ?? 0,
-                Subscription_Type_ID = id,
-                Starting_Date = DateTime.Today,
-                isActive = true
-            };
+                try
+                {
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var newSubscription = new Subscription
+                        {
+                            Client_ID = ClientId ?? 0,
+                            Subscription_Type_ID = id,
+                            Starting_Date = DateTime.Today,
+                            isActive = true
+                        };
 
-            db.Subscriptions.Add(newSubscription);
-            db.SaveChanges();
+                        db.Subscriptions.Add(newSubscription);
+                        db.SaveChanges();
+                    }
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
-
+        
         private SubscriptionType GetSubscriptionTypeById(int id)
         {
             using DataBaseContext db = new DataBaseContext();
@@ -274,16 +245,86 @@ namespace oopd_project.Controllers
 
             return coaches;
         }
+        
+        private List<ClientScheduleItem> GetCurrentScheduleForClient()
+        {
+            var currentSchedule = new List<ClientScheduleItem>();
 
+            using DataBaseContext db = new DataBaseContext();
+
+            int subscriptionTypeId = db.Subscriptions
+                .Where(s => s.Client_ID == ClientId)
+                .Select(s => s.Subscription_Type_ID)
+                .FirstOrDefault();
+
+            if (subscriptionTypeId != 0)
+            {
+                var classesId = db.Subscription_Classes
+                    .Where(s => s.Subscription_ID == subscriptionTypeId)
+                    .Select(s => s.Class_ID).ToList();
+
+                DateTime today = DateTime.Today;
+                DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek); 
+                DateTime endOfWeek = startOfWeek.AddDays(7);
+
+                foreach (var classId in classesId)
+                {
+                    var clientScheduleItem = new ClientScheduleItem
+                    {
+                        Class = db.Classes
+                            .Where(c => c.Class_ID == classId)
+                            .Select(c => new Models.Class
+                            {
+                                Id = c.Class_ID,
+                                Name = c.Class_Name,
+                                Description = c.Description,
+                                Duration = TimeSpan.FromHours(c.Duration),
+                                MaxNumberOfPeople = c.Max_Participants,
+                            })
+                            .FirstOrDefault(),
+        
+                        DateTimes = db.Schedule
+                            .Where(s => s.Class_ID == classId && s.Date_Time >= startOfWeek && s.Date_Time < endOfWeek)
+                            .Select(s => s.Date_Time)
+                            .Distinct()
+                            .ToList()
+                    };
+                    if (clientScheduleItem.Class != null && clientScheduleItem.DateTimes.Count != 0)
+                    {
+                        currentSchedule.Add(clientScheduleItem);
+                    }
+                }
+
+
+            }
+            
+            return currentSchedule;
+        }
+        
         private void DeleteUnactiveSubscriptions()
         {
-            MakeSubscriptionsUnavailable();
-            
-            using DataBaseContext db = new DataBaseContext();
-            var unactiveSubscriptions = db.Subscriptions.Where(s => s.isActive == false).ToList();
-            db.Subscriptions.RemoveRange(unactiveSubscriptions);
-            db.SaveChanges();
+            using (var scope = new TransactionScope())
+            {
+                try
+                {
+                    MakeSubscriptionsUnavailable();
+
+                    using (DataBaseContext db = new DataBaseContext())
+                    {
+                        var unactiveSubscriptions = db.Subscriptions.Where(s => s.isActive == false).ToList();
+                        db.Subscriptions.RemoveRange(unactiveSubscriptions);
+                        db.SaveChanges();
+                    }
+                    
+                    scope.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
+
     }
 }
 
